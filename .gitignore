@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.idea
+/09_Data_Prprocessing.py
+/07_Classification.py
