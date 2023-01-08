@@ -89,3 +89,33 @@ class MLP:
     def get_classifier(self):
         return self.classifier
 
+
+
+
+
+prediction = grid_search.predict(X_val)
+score = accuracy_score(y_val, prediction)
+print(f"---------- {score}")
+
+best_score = grid_search.best_score_
+print(f'Best score: {best_score:.2f}')
+
+
+# Récupérez les résultats de la recherche de grille
+results = grid_search.cv_results_
+
+results_dataframe = []
+columns_name = []
+for param, possible_values in optimizations_values.items():
+    results_dataframe.append(results[f'param_{param}'].data)
+    columns_name.append(f"{param}")
+results_dataframe.append(results['mean_test_score'])
+columns_name.append("mean_test_score")
+
+results_dataframe = pd.DataFrame(results_dataframe).T
+results_dataframe = results_dataframe.reset_index(drop=True)
+results_dataframe.columns = columns_name
+results_dataframe = results_dataframe.sort_values(by=['mean_test_score'], ascending=False)
+
+columns_name.remove("mean_test_score")
+plot_bar_chart(name_cls, results_dataframe, 'mean_test_score', columns_name)
