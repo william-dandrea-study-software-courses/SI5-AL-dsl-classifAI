@@ -22,7 +22,6 @@ warnings.filterwarnings('ignore')
 
 
 
-
 class DataType(Enum):
     BOOLEAN = 1
     QUALITATIVE_NOMINAL = 2         # Named categories : ['FH', 'SF', 'EV']
@@ -311,9 +310,6 @@ ROWS_DATATYPES = {
     "node-caps": {
         "datatype": DataType.BOOLEAN,
         "possible_values": ["yes", "no"],
-        "job_when_missing_value": {
-            "type": JobWhenMissingValue.DELETE_LINE,
-        }
     },
     "deg-malig": {
         "datatype": DataType.QUANTITATIVE_DISCRETE,
