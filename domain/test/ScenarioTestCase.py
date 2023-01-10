@@ -1,5 +1,8 @@
 import unittest
 
+import nbformat
+
+from App import App
 from steps.preprocessing.Preprocessing import Preprocessing
 from utils.dataset.Dataset import Dataset
 from utils.dataset.column.BooleanColumn import BooleanColumn
@@ -116,6 +119,16 @@ class ScenarioTestCase(unittest.TestCase):
         dataset.add_column(breast_column)
         dataset.add_column(breast_quad_column)
         dataset.add_column(irradiat_column)
+
+        # ================================================================================== #
+        # Instanciation de l'App
+        # ================================================================================== #
+        preprocessing.add_dataset(dataset=dataset)
+        application: App = App()
+        application.add_preprocessing(preprocessing)
+
+        with open('my_notebook.ipynb', 'w', encoding='utf-8') as f:
+            nbformat.write(application.generate(), f)
 
 
 if __name__ == '__main__':
