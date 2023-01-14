@@ -1,6 +1,10 @@
+from typing import List, Tuple
+
 import nbformat
 
 from domain.main.steps.Step import Step
+from utils.Cell import Cell, CellTypeEnum
+from utils.Import import Import
 from utils.dataset.Dataset import Dataset
 
 
@@ -12,27 +16,35 @@ class Preprocessing(Step):
         self.is_dataset_contains_headers_name = is_dataset_contains_headers_name
         self.dataset: Dataset = None
 
+        self.imports: List[Import] = []
+
     def add_dataset(self, dataset: Dataset):
         self.dataset = dataset
 
-    def generate(self):
-
+    def generate(self) -> List[Cell]:
         if self.dataset is None:
             raise Exception("A dataset is required for generate the Jupyter notebook file")
 
+        self.imports.append(Import(package="pandas", method=None, as_name="pd"))
+
+        cells: List[Cell] = []
+
         description_content = f"# Préprocessing"
-        description_cell = nbformat.v4.new_markdown_cell(description_content)
+        cells.append(Cell(description_content, CellTypeEnum.MARKDOWN))
 
         load_description_content = f"## We import the dataset"
-        load_description_cell = nbformat.v4.new_markdown_cell(load_description_content)
+        cells.append(Cell(load_description_content, CellTypeEnum.MARKDOWN))
 
         cell_code = f'def load_dataset(dataset_url: str) -> pd.DataFrame: \n' \
-                    f'    current_dataset = pd.read_csv(dataset_url, header={1 if self.is_dataset_contains_headers_name else None}) \n' \
-                    f'    current_dataset.columns = {[col.name for col in self.dataset.columns]} \n' \
-                    f'    return current_dataset \n' \
+                    f'\tcurrent_dataset = pd.read_csv(dataset_url, header={1 if self.is_dataset_contains_headers_name else None}) \n' \
+                    f'\tcurrent_dataset.columns = {[col.name for col in self.dataset.columns]} \n' \
+                    f'\treturn current_dataset \n' \
                     f'\n' \
                     f'load_dataset("{self.url_dataset}") \n' \
                     f''
-        code_cell = nbformat.v4.new_code_cell(cell_code)
+        cells.append(Cell(cell_code, CellTypeEnum.CODE))
 
-        return [description_cell, load_description_cell, code_cell]
+        return cells
+
+    def get_imports(self) -> List[Import]:
+        return self.imports
