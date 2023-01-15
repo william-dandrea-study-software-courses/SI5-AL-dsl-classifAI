@@ -3,6 +3,8 @@ import unittest
 import nbformat
 
 from App import App
+from steps.comparaison.Comparaison import Comparaison
+from steps.comparaison.chart.charts.CombinaisonChart import CombinaisonChart
 from steps.mining.Mining import Mining
 from steps.mining.classifier.classifiers.DecisionTreeClassifier import DecisionTreeClassifier
 from steps.mining.classifier.classifiers.KNeighborClassifier import KNeighborClassifier
@@ -158,7 +160,7 @@ class ScenarioTestCase(unittest.TestCase):
         application.add_transformation(transformation)
 
         # ================================================================================== #
-        # Classifiers
+        # Mining
         # ================================================================================== #
 
         mining: Mining = Mining()
@@ -199,9 +201,18 @@ class ScenarioTestCase(unittest.TestCase):
         mining.add_classifier(mlpc_classifier)
         mining.add_classifier(random_forest_classifier)
 
-
         application.add_mining(mining)
 
+        # ================================================================================== #
+        # Comparaison
+        # ================================================================================== #
+        comparaison: Comparaison = Comparaison()
+
+        random_forest_classifier_combinaison_chart: CombinaisonChart = CombinaisonChart(random_forest_classifier)
+        comparaison.add_chart(random_forest_classifier_combinaison_chart)
+
+
+        application.add_comparaison(comparaison)
 
 
         with open('my_notebook2.ipynb', 'w', encoding='utf-8') as f:

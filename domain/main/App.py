@@ -2,6 +2,7 @@ from typing import List, Tuple
 
 import nbformat
 
+from steps.comparaison.Comparaison import Comparaison
 from steps.mining.Mining import Mining
 from steps.preprocessing.Preprocessing import Preprocessing
 from steps.splitting.Splitting import Splitting
@@ -17,6 +18,7 @@ class App:
         self.__splitting: Splitting = None
         self.__transformation = None
         self.__mining = None
+        self.__comparaison = None
 
     def add_preprocessing(self, preprocessing: Preprocessing):
         self.__preprocessing = preprocessing
@@ -29,6 +31,9 @@ class App:
 
     def add_mining(self, mining: Mining):
         self.__mining = mining
+
+    def add_comparaison(self, comparaison: Comparaison):
+        self.__comparaison = comparaison
 
     def generate(self):
 
@@ -44,17 +49,22 @@ class App:
         if self.__mining is None:
             raise Exception("Cannot compile code without a mining step")
 
+        if self.__comparaison is None:
+            raise Exception("Cannot compile code without a comparaison step")
+
         # Ajout des cells dans le Notebook
         cells: List[Cell] = self.__preprocessing.export()
         cells += self.__splitting.export()
         cells += self.__transformation.export()
         cells += self.__mining.export()
+        cells += self.__comparaison.export()
 
         # Ajout des imports dans le NoteBook
         imports: List[Import] = self.__preprocessing.get_imports()
         imports += self.__splitting.get_imports()
         imports += self.__transformation.get_imports()
         imports += self.__mining.get_imports()
+        imports += self.__comparaison.get_imports()
 
         nb = nbformat.v4.new_notebook()
 
