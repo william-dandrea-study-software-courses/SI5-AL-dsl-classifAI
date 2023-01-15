@@ -18,17 +18,17 @@ class Preprocessing(Step):
         self.__is_dataset_contains_headers_name = is_dataset_contains_headers_name
         self.__dataset: Dataset = None
 
-        self.__imports: List[Import] = []
+
 
     def add_dataset(self, dataset: Dataset):
         self.__dataset = dataset
 
-    def generate(self) -> List[Cell]:
+    def export(self) -> List[Cell]:
         if self.__dataset is None:
             raise Exception("A dataset is required for generate the Jupyter notebook file")
 
-        self.__imports.append(Import(package="pandas", method=None, as_name="pd"))
-        self.__imports.append(Import(package="numpy", method=None, as_name="np"))
+        self._imports.append(Import(package="pandas", method=None, as_name="pd"))
+        self._imports.append(Import(package="numpy", method=None, as_name="np"))
 
         cells: List[Cell] = []
 
@@ -66,5 +66,4 @@ class Preprocessing(Step):
 
         return cells
 
-    def get_imports(self) -> List[Import]:
-        return self.__imports
+

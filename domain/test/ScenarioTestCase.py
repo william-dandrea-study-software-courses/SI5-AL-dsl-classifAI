@@ -6,6 +6,7 @@ from App import App
 from steps.preprocessing.Preprocessing import Preprocessing
 from steps.preprocessing.cleaning.DeleteLineCleaningMethod import DeleteLineCleaningMethod
 from steps.preprocessing.cleaning.ReplaceLineCleaningMethod import ReplaceLineCleaningMethod
+from steps.splitting.Splitting import Splitting
 from utils.dataset.Dataset import Dataset
 from utils.dataset.column.BooleanColumn import BooleanColumn
 from utils.dataset.column.Column import Column
@@ -16,17 +17,15 @@ from utils.dataset.column.quantitative.DiscreteQuantitativeColumn import Discret
 
 class ScenarioTestCase(unittest.TestCase):
     def test_scenario(self):
-        # self.assertEqual(True, False)  # add assertion here
-        print("Test scenario")
+
+        application: App = App()
 
         # ================================================================================== #
         # Instanciation du preprocessing
         # ================================================================================== #
         preprocessing: Preprocessing = Preprocessing(url_dataset="./breast-cancer.csv")
 
-        # ================================================================================== #
         # Instanciation des colonnes
-        # ================================================================================== #
         class_column: BooleanColumn = BooleanColumn()
         class_column.set_name("Class")
         class_column.set_true_value("recurrence-events")
@@ -109,9 +108,8 @@ class ScenarioTestCase(unittest.TestCase):
         irradiat_column.set_true_value("no")
         irradiat_column.set_is_label()
 
-        # ================================================================================== #
+
         # Instanciation du dataset
-        # ================================================================================== #
         dataset: Dataset = Dataset()
         dataset.add_column(class_column)
         dataset.add_column(age_column)
@@ -124,12 +122,26 @@ class ScenarioTestCase(unittest.TestCase):
         dataset.add_column(breast_quad_column)
         dataset.add_column(irradiat_column)
 
-        # ================================================================================== #
-        # Instanciation de l'App
-        # ================================================================================== #
+        # Preprocessing implémentation
         preprocessing.add_dataset(dataset=dataset)
-        application: App = App()
+
         application.add_preprocessing(preprocessing)
+
+        # ================================================================================== #
+        # Splitting
+        # ================================================================================== #
+
+        splitting: Splitting = Splitting(dataset=dataset)
+
+        splitting.set_train_dataset_percentage(0.7)
+        splitting.set_validation_dataset_percentage(0.15)
+        splitting.set_test_dataset_percentage(0.15)
+
+        application.add_splitting(splitting)
+
+        # ================================================================================== #
+        # Mining
+        # ================================================================================== #
 
         with open('my_notebook.ipynb', 'w', encoding='utf-8') as f:
             nbformat.write(application.generate(), f)

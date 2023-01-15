@@ -16,3 +16,6 @@ class BooleanColumn(Column):
 
     def set_is_label(self):
         self.__is_label = True
+
+    def get_is_label(self) -> bool:
+        return self.__is_label
