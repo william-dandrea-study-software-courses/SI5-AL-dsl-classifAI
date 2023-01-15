@@ -4,6 +4,8 @@ import nbformat
 
 from App import App
 from steps.preprocessing.Preprocessing import Preprocessing
+from steps.preprocessing.cleaning.DeleteLineCleaningMethod import DeleteLineCleaningMethod
+from steps.preprocessing.cleaning.ReplaceLineCleaningMethod import ReplaceLineCleaningMethod
 from utils.dataset.Dataset import Dataset
 from utils.dataset.column.BooleanColumn import BooleanColumn
 from utils.dataset.column.Column import Column
@@ -29,6 +31,7 @@ class ScenarioTestCase(unittest.TestCase):
         class_column.set_name("Class")
         class_column.set_true_value("recurrence-events")
         class_column.set_false_value("no-recurrence-events")
+        class_column.set_cleaning_method(ReplaceLineCleaningMethod(False))
 
         age_column: OrdinalQualitativeColumn = OrdinalQualitativeColumn()
         age_column.set_name("age")
@@ -101,6 +104,7 @@ class ScenarioTestCase(unittest.TestCase):
         breast_quad_column.add_possible_value("central")
 
         irradiat_column: BooleanColumn = BooleanColumn()
+        irradiat_column.set_name("irradiat")
         irradiat_column.set_true_value("yes")
         irradiat_column.set_true_value("no")
         irradiat_column.set_is_label()

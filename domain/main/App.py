@@ -10,18 +10,18 @@ from utils.Import import Import
 class App:
 
     def __init__(self):
-        self.preprocessing: Preprocessing = None
+        self.__preprocessing: Preprocessing = None
 
     def add_preprocessing(self, preprocessing: Preprocessing):
-        self.preprocessing = preprocessing
+        self.__preprocessing = preprocessing
 
     def generate(self):
 
-        if self.preprocessing is None:
+        if self.__preprocessing is None:
             raise Exception("Cannot compile code without a preprocessing step")
 
-        cells: List[Cell] = self.preprocessing.generate()
-        imports: List[Import] = self.preprocessing.get_imports()
+        cells: List[Cell] = self.__preprocessing.generate()
+        imports: List[Import] = self.__preprocessing.get_imports()
 
         nb = nbformat.v4.new_notebook()
 

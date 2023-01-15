@@ -11,11 +11,11 @@ class CellTypeEnum(Enum):
 class Cell:
 
     def __init__(self, content_in_cell: str, cell_type: CellTypeEnum):
-        self.content_in_cell = content_in_cell
-        self.cell_type = cell_type
+        self.__content_in_cell = content_in_cell
+        self.__cell_type = cell_type
 
     def export(self):
-        if self.cell_type == CellTypeEnum.CODE:
-            return nbformat.v4.new_code_cell(self.content_in_cell)
+        if self.__cell_type == CellTypeEnum.CODE:
+            return nbformat.v4.new_code_cell(self.__content_in_cell)
 
-        return nbformat.v4.new_markdown_cell(self.content_in_cell)
+        return nbformat.v4.new_markdown_cell(self.__content_in_cell)
