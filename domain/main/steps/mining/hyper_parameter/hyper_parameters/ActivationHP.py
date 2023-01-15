@@ -4,9 +4,9 @@ from steps.mining.hyper_parameter.HyperParameter import HyperParameter
 
 
 class ActivationHPEnum(Enum):
-    IDENTITY = "identity",
-    LOGISTIC = "logistic",
-    TANH = "tanh",
+    IDENTITY = "identity"
+    LOGISTIC = "logistic"
+    TANH = "tanh"
     RELU = "relu"
 
 

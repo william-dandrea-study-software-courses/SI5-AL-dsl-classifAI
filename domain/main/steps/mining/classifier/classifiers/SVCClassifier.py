@@ -36,3 +36,4 @@ class SVCClassifier(Classifier):
                 params[hp.get_sklearn_name()].append(hp.get_C())
 
         return params
+

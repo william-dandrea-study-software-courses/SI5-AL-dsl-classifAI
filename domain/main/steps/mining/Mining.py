@@ -37,10 +37,10 @@ class Mining(Step):
             self._imports += cls.get_imports()
             code += cls.export() + '\n'
             code += f'split = [-1 if i < len(X_train) else 0 for i in range(X_train.shape[0] + X_val.shape[0])]' + '\n'
-            code += f'grid_search_{cls.get_name()} = GridSearchCV(estimator={cls.get_name()}, param_grid={cls.get_param_grid()}, scoring="{self.__train_comparaison_method.value}", cv=PredefinedSplit(split), verbose=2)' + '\n'
-            code += f'grid_search_{cls.get_name()}.fit(np.concatenate([X_train, X_val]), np.concatenate([y_train, y_val]))' + '\n'
+            code += f'{cls.get_grid_search_name()} = GridSearchCV(estimator={cls.get_name()}, param_grid={cls.get_param_grid()}, scoring="{self.__train_comparaison_method.value}", cv=PredefinedSplit(split), verbose=2)' + '\n'
+            code += f'{cls.get_grid_search_name()}.fit(np.concatenate([X_train, X_val]), np.concatenate([y_train, y_val]))' + '\n'
 
-            code += f'grid_search_{cls.get_name()}.best_params_'
+            code += f'{cls.get_grid_search_name()}.best_params_'
 
             cells.append(Cell(code, CellTypeEnum.CODE))
 

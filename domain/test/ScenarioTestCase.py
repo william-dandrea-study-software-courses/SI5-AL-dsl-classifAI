@@ -4,7 +4,15 @@ import nbformat
 
 from App import App
 from steps.mining.Mining import Mining
+from steps.mining.classifier.classifiers.DecisionTreeClassifier import DecisionTreeClassifier
+from steps.mining.classifier.classifiers.KNeighborClassifier import KNeighborClassifier
+from steps.mining.classifier.classifiers.MLPCClassifier import MLPCClassifier
+from steps.mining.classifier.classifiers.RandomForectClassifier import RandomForestClassifier
 from steps.mining.classifier.classifiers.SVCClassifier import SVCClassifier
+from steps.mining.hyper_parameter.hyper_parameters.ActivationHP import ActivationHPEnum
+from steps.mining.hyper_parameter.hyper_parameters.CriterionHP import CriterionHPEnum
+from steps.mining.hyper_parameter.hyper_parameters.SolverHP import SolverHPEnum
+from steps.mining.hyper_parameter.hyper_parameters.SplitterHP import SplitterHPEnum
 from steps.preprocessing.Preprocessing import Preprocessing
 from steps.preprocessing.cleaning.DeleteLineCleaningMethod import DeleteLineCleaningMethod
 from steps.preprocessing.cleaning.ReplaceLineCleaningMethod import ReplaceLineCleaningMethod
@@ -160,8 +168,38 @@ class ScenarioTestCase(unittest.TestCase):
         svc_classifier.add_C(1.0)
         svc_classifier.add_C(2.0)
 
+        decision_tree_classifier: DecisionTreeClassifier = DecisionTreeClassifier()
+        decision_tree_classifier.add_splitter(SplitterHPEnum.BEST)
+        decision_tree_classifier.add_splitter(SplitterHPEnum.RANDOM)
+        decision_tree_classifier.add_criterion(CriterionHPEnum.GINI)
+        decision_tree_classifier.add_criterion(CriterionHPEnum.ENTROPY)
+        decision_tree_classifier.add_min_samples_split(10)
+        decision_tree_classifier.add_min_samples_split(12)
+
+        k_neighbor_classifier: KNeighborClassifier = KNeighborClassifier()
+        k_neighbor_classifier.add_n_neighbors(5)
+        k_neighbor_classifier.add_n_neighbors(8)
+
+        mlpc_classifier: MLPCClassifier = MLPCClassifier()
+        mlpc_classifier.add_solver(SolverHPEnum.SGD)
+        mlpc_classifier.add_solver(SolverHPEnum.ADAM)
+        mlpc_classifier.add_activation(ActivationHPEnum.TANH)
+        mlpc_classifier.add_activation(ActivationHPEnum.IDENTITY)
+
+        random_forest_classifier: RandomForestClassifier = RandomForestClassifier()
+        random_forest_classifier.add_criterion(CriterionHPEnum.GINI)
+        random_forest_classifier.add_criterion(CriterionHPEnum.ENTROPY)
+        random_forest_classifier.add_n_estimators(5)
+        random_forest_classifier.add_n_estimators(2)
+
         # Ajout des classifiers et mining
         mining.add_classifier(svc_classifier)
+        mining.add_classifier(decision_tree_classifier)
+        mining.add_classifier(k_neighbor_classifier)
+        mining.add_classifier(mlpc_classifier)
+        mining.add_classifier(random_forest_classifier)
+
+
         application.add_mining(mining)
 
 

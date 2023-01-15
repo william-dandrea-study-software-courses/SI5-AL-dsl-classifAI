@@ -16,10 +16,32 @@ class MLPCClassifier(Classifier):
         self._hyper_parameters.append(ActivationHP(activation))
 
     def get_param_grid(self) -> dict:
-        pass
+        params: dict = {}
+
+        for hp in self._hyper_parameters:
+
+            if not (hp.__class__.__name__ == SolverHP.__name__ or hp.__class__.__name__ == ActivationHP.__name__):
+                raise ValueError("Cannot use an hyperparameter that is not available for this classifier")
+
+            if not (hp.get_sklearn_name() in params):
+                params[hp.get_sklearn_name()] = []
+
+            if hp.__class__.__name__ == SolverHP.__name__:
+                hp: SolverHP = hp
+                params[hp.get_sklearn_name()].append(hp.get_solver().value)
+
+            if hp.__class__.__name__ == ActivationHP.__name__:
+                hp: ActivationHP = hp
+                params[hp.get_sklearn_name()].append(hp.get_activation().value)
+
+        return params
 
     def export(self) -> str:
-        pass
+        return f'{self.get_name()} = MLPClassifier()\n'
+
 
     def get_name(self) -> str:
-        pass
+        return 'mlp_classifier'
+
+
+

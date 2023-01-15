@@ -30,7 +30,7 @@ class Preprocessing(Step):
         self._imports.append(Import(package="pandas", method=None, as_name="pd"))
         self._imports.append(Import(package="numpy", method=None, as_name="np"))
 
-        cells: List[Cell] = []
+        cells: List[Cell] = [Cell("import warnings\nwarnings.filterwarnings('ignore')", CellTypeEnum.CODE)]
 
         description_content = f"# Préprocessing"
         cells.append(Cell(description_content, CellTypeEnum.MARKDOWN))

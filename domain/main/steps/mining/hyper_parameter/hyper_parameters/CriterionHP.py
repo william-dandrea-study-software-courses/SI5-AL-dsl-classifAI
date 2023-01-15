@@ -4,8 +4,8 @@ from steps.mining.hyper_parameter.HyperParameter import HyperParameter
 
 
 class CriterionHPEnum(Enum):
-    GINI = "gini",
-    ENTROPY = "entropy",
+    GINI = "gini"
+    ENTROPY = "entropy"
     LOGLOSS = "logloss"
 
 

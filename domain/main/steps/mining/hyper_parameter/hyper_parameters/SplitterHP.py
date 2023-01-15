@@ -4,7 +4,7 @@ from steps.mining.hyper_parameter.HyperParameter import HyperParameter
 
 
 class SplitterHPEnum(Enum):
-    BEST = "best",
+    BEST = "best"
     RANDOM = "random"
 
 

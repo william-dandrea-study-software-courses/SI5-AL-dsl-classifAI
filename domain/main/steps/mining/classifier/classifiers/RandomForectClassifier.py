@@ -15,11 +15,30 @@ class RandomForestClassifier(Classifier):
     def add_criterion(self, criterion: CriterionHPEnum):
         self._hyper_parameters.append(CriterionHP(criterion))
 
-    def get_param_grid(self) -> dict:
-        pass
-
     def export(self) -> str:
-        pass
+        return f'{self.get_name()} = RandomForestClassifier()\n'
 
     def get_name(self) -> str:
-        pass
+        return f'random_forest_classifier'
+
+    def get_param_grid(self) -> dict:
+        params: dict = {}
+
+        for hp in self._hyper_parameters:
+
+            if not (hp.__class__.__name__ == NEstimatorHP.__name__ or hp.__class__.__name__ == CriterionHP.__name__):
+                raise ValueError("Cannot use an hyperparameter that is not available for this classifier")
+
+            if not (hp.get_sklearn_name() in params):
+                params[hp.get_sklearn_name()] = []
+
+            if hp.__class__.__name__ == NEstimatorHP.__name__:
+                hp: NEstimatorHP = hp
+                params[hp.get_sklearn_name()].append(hp.get_n_estimator())
+
+            if hp.__class__.__name__ == CriterionHP.__name__:
+                hp: CriterionHP = hp
+                params[hp.get_sklearn_name()].append(hp.get_criterion().value)
+
+        return params
+

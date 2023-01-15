@@ -4,8 +4,8 @@ from steps.mining.hyper_parameter.HyperParameter import HyperParameter
 
 
 class SolverHPEnum(Enum):
-    LBFGS = "lbfgs",
-    SGD = "sgd",
+    LBFGS = "lbfgs"
+    SGD = "sgd"
     ADAM = "adam"
 
 

@@ -12,10 +12,27 @@ class KNeighborClassifier(Classifier):
         self._hyper_parameters.append(NNeighborHP(n_neighbors))
 
     def get_param_grid(self) -> dict:
-        pass
+
+        params: dict = {}
+
+        for hp in self._hyper_parameters:
+
+            if not (hp.__class__.__name__ == NNeighborHP.__name__):
+                raise ValueError("Cannot use an hyperparameter that is not available for this classifier")
+
+            if not (hp.get_sklearn_name() in params):
+                params[hp.get_sklearn_name()] = []
+
+            if hp.__class__.__name__ == NNeighborHP.__name__:
+                hp: NNeighborHP = hp
+                params[hp.get_sklearn_name()].append(hp.get_n_neighbor())
+
+        return params
 
     def export(self) -> str:
-        pass
+        return f'{self.get_name()} = KNeighborsClassifier()\n'
 
     def get_name(self) -> str:
-        pass
+        return f'k_neighbor_classifier'
+
+
