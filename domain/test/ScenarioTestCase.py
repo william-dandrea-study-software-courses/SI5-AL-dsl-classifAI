@@ -3,6 +3,8 @@ import unittest
 import nbformat
 
 from App import App
+from steps.mining.Mining import Mining
+from steps.mining.classifier.classifiers.SVCClassifier import SVCClassifier
 from steps.preprocessing.Preprocessing import Preprocessing
 from steps.preprocessing.cleaning.DeleteLineCleaningMethod import DeleteLineCleaningMethod
 from steps.preprocessing.cleaning.ReplaceLineCleaningMethod import ReplaceLineCleaningMethod
@@ -146,6 +148,23 @@ class ScenarioTestCase(unittest.TestCase):
 
         transformation: Transformation = Transformation(dataset=dataset)
         application.add_transformation(transformation)
+
+        # ================================================================================== #
+        # Classifiers
+        # ================================================================================== #
+
+        mining: Mining = Mining()
+
+        # Création des classifiers
+        svc_classifier: SVCClassifier = SVCClassifier()
+        svc_classifier.add_C(1.0)
+        svc_classifier.add_C(2.0)
+
+        # Ajout des classifiers et mining
+        mining.add_classifier(svc_classifier)
+        application.add_mining(mining)
+
+
 
         with open('my_notebook2.ipynb', 'w', encoding='utf-8') as f:
             nbformat.write(application.generate(), f)

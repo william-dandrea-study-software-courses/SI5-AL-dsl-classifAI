@@ -27,18 +27,17 @@ class Transformation(Step):
         code_cell: str = 'def transform_data(X_train, X_val, X_test):\n'
         for column in self.__dataset.get_columns():
             if column.get_default_transformation():
-                if column.__class__.__name__ == BooleanColumn.__name__:
+                if column.__class__.__name__ == BooleanColumn.__name__ and column.get_default_transformation():
                     bool_column: BooleanColumn = column
 
                     if not bool_column.get_is_label():
-                        replacement = { bool_column.get_true_value(): True, bool_column.get_false_value(): False }
+                        replacement = {bool_column.get_true_value(): True, bool_column.get_false_value(): False}
                         code_cell += f'\tX_train["{column.get_name()}"] = X_train["{column.get_name()}"].map({replacement})\n' \
                                      f'\tX_val["{column.get_name()}"] = X_val["{column.get_name()}"].map({replacement})\n' \
                                      f'\tX_test["{column.get_name()}"] = X_test["{column.get_name()}"].map({replacement})\n' \
                                      f'\t\n'
 
-
-                if column.__class__.__name__ == ContinuousQuantitativeColumn.__name__:
+                if column.__class__.__name__ == ContinuousQuantitativeColumn.__name__ and column.get_default_transformation():
                     code_cell += f'\tX_train["{column.get_name()}"] = X_train["{column.get_name()}"].astype(float) \n' \
                                  f'\tX_val["{column.get_name()}"] = X_val["{column.get_name()}"].astype(float) \n' \
                                  f'\tX_test["{column.get_name()}"] = X_test["{column.get_name()}"].astype(float) \n' \
@@ -47,7 +46,7 @@ class Transformation(Step):
                                  f'\tX_test[["{column.get_name()}"]] = minmax_scale(X_test[["{column.get_name()}"]])\n' \
                                  f'\t\n'
 
-                if column.__class__.__name__ == DiscreteQuantitativeColumn.__name__:
+                if column.__class__.__name__ == DiscreteQuantitativeColumn.__name__ and column.get_default_transformation():
                     code_cell += f'\tX_train["{column.get_name()}"] = X_train["{column.get_name()}"].astype(float) \n' \
                                  f'\tX_val["{column.get_name()}"] = X_val["{column.get_name()}"].astype(float) \n' \
                                  f'\tX_test["{column.get_name()}"] = X_test["{column.get_name()}"].astype(float) \n' \
@@ -56,7 +55,7 @@ class Transformation(Step):
                                  f'\tX_test[["{column.get_name()}"]] = minmax_scale(X_test[["{column.get_name()}"]])\n' \
                                  f'\t\n'
 
-                if column.__class__.__name__ == NominalQualitativeColumn.__name__:
+                if column.__class__.__name__ == NominalQualitativeColumn.__name__ and column.get_default_transformation():
                     nom_column: NominalQualitativeColumn = column
                     code_cell += f'\tone_hot_encoder = OneHotEncoder( categories=[{nom_column.get_possible_values()}])\n' \
                                  f'\tX_train_encoded_values = one_hot_encoder.fit_transform(X_train[["{nom_column.get_name()}"]]).toarray()\n' \
@@ -74,12 +73,8 @@ class Transformation(Step):
                                  f'\tX_train = X_train.drop("{column.get_name()}", axis=1)\n' \
                                  f'\tX_val = X_val.drop("{column.get_name()}", axis=1)\n' \
                                  f'\tX_test = X_test.drop("{column.get_name()}", axis=1)\n' \
-                        # pd.concat([X_train, X_val, X_test], axis=1).to_csv("tst.csv")
 
-                # f'\tX_train = X_train.drop("{column.get_name()}", axis=1)\n' \
-                # f'\tX_val = X_val.drop("{column.get_name()}", axis=1)\n' \
-                # f'\tX_test = X_test.drop("{column.get_name()}", axis=1)\n' \
-                if column.__class__.__name__ == OrdinalQualitativeColumn.__name__:
+                if column.__class__.__name__ == OrdinalQualitativeColumn.__name__ and column.get_default_transformation():
                     ord_column: OrdinalQualitativeColumn = column
                     code_cell += f'\tordinal_encoder = OrdinalEncoder(categories=[{ord_column.get_possible_values()}])\n' \
                                  f'\tX_train["{column.get_name()}"] = ordinal_encoder.fit_transform(X_train[["{column.get_name()}"]])\n' \

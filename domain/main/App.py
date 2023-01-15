@@ -2,6 +2,7 @@ from typing import List, Tuple
 
 import nbformat
 
+from steps.mining.Mining import Mining
 from steps.preprocessing.Preprocessing import Preprocessing
 from steps.splitting.Splitting import Splitting
 from steps.transformation.Transformation import Transformation
@@ -15,6 +16,7 @@ class App:
         self.__preprocessing: Preprocessing = None
         self.__splitting: Splitting = None
         self.__transformation = None
+        self.__mining = None
 
     def add_preprocessing(self, preprocessing: Preprocessing):
         self.__preprocessing = preprocessing
@@ -24,6 +26,10 @@ class App:
 
     def add_transformation(self, transformation: Transformation):
         self.__transformation = transformation
+
+    def add_mining(self, mining: Mining):
+        self.__mining = mining
+
     def generate(self):
 
         if self.__preprocessing is None:
@@ -35,19 +41,22 @@ class App:
         if self.__transformation is None:
             raise Exception("Cannot compile code without a transformation step")
 
-        # Ajout des imports dans le NoteBook
-        imports: List[Import] = self.__preprocessing.get_imports()
-        imports += self.__splitting.get_imports()
-        imports += self.__transformation.get_imports()
+        if self.__mining is None:
+            raise Exception("Cannot compile code without a mining step")
 
         # Ajout des cells dans le Notebook
         cells: List[Cell] = self.__preprocessing.export()
         cells += self.__splitting.export()
         cells += self.__transformation.export()
+        cells += self.__mining.export()
 
+        # Ajout des imports dans le NoteBook
+        imports: List[Import] = self.__preprocessing.get_imports()
+        imports += self.__splitting.get_imports()
+        imports += self.__transformation.get_imports()
+        imports += self.__mining.get_imports()
 
         nb = nbformat.v4.new_notebook()
-
 
         imports_string: str = ""
         for import_value in imports:

@@ -1,19 +1,31 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from enum import Enum
 from typing import List
 
 from domain.main.steps.mining.hyper_parameter.HyperParameter import HyperParameter
+from utils.Import import Import
 
 
-class TrainComparaisonMethodEnum(Enum):
-    MEAN_SCORE = "mean_test_score"
-    ROC_AUC = "roc_auc"
+
 
 
 class Classifier(ABC):
     def __init__(self):
-        self.train_comparaison_method: TrainComparaisonMethodEnum = TrainComparaisonMethodEnum.MEAN_SCORE
-        self.hyper_parameters: List[HyperParameter] = []
+        self._hyper_parameters: List[HyperParameter] = []
+        self._imports: List[Import] = []
 
-    def set_train_comparaison_method(self, comparaison_method: TrainComparaisonMethodEnum):
-        self.train_comparaison_method = comparaison_method
+
+    def get_imports(self) -> List[Import]:
+        return self._imports
+
+    @abstractmethod
+    def get_param_grid(self) -> dict:
+        pass
+
+    @abstractmethod
+    def export(self) -> str:
+        pass
+
+    @abstractmethod
+    def get_name(self) -> str:
+        pass

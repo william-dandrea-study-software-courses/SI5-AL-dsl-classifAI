@@ -1,6 +1,6 @@
 from enum import Enum
 
-from domain.main.steps import HyperParameter
+from steps.mining.hyper_parameter.HyperParameter import HyperParameter
 
 
 class ActivationHPEnum(Enum):
@@ -15,4 +15,10 @@ class ActivationHP(HyperParameter):
     def __init__(self, activation: ActivationHPEnum):
         super().__init__()
 
-        self.activation: ActivationHPEnum = activation
+        self.__activation: ActivationHPEnum = activation
+
+    def get_sklearn_name(self) -> str:
+        return "activation"
+
+    def get_activation(self) -> ActivationHPEnum:
+        return self.__activation
