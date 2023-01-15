@@ -43,13 +43,14 @@ class Splitting(Step):
                     f'\ty = dataframe["{label_column_name}"]\n' \
                     f'\tX = dataframe.drop("{label_column_name}", axis=1)\n' \
                     f'\t\n' \
-                    f'\tX_train, X_test, y_train, y_test = train_test_split(X, y, test_size={self.__train_dataset_percentage}, random_state=42)\n' \
+                    f'\tX_train, X_test, y_train, y_test = train_test_split(X, y, test_size={self.__validation_dataset_percentage}, random_state=42)\n' \
                     f'\t\n' \
                     f'\tX_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size={self.__test_dataset_percentage}, random_state=42)\n' \
                     f'\t\n' \
-                    f'\treturn X_train, y_train, X_val, y_val, X_test, y_test\n'
-
-        code += f'\nX_train, y_train, X_val, y_val, X_test, y_test = split_data(dataframe)'
+                    f'\treturn X_train.reset_index(drop=True), y_train.reset_index(drop=True), X_val.reset_index(drop=True), y_val.reset_index(drop=True), X_test.reset_index(drop=True), y_test.reset_index(drop=True)\n'
+        code += f'\ndataframe: pd.DataFrame = load_dataset()\n'
+        code += f'\ncleaned_dataframe = clean_dataset(dataframe)\n'
+        code += f'\nX_train, y_train, X_val, y_val, X_test, y_test = split_data(cleaned_dataframe)'
         code += f'\nX_train, y_train, X_val, y_val, X_test, y_test'
 
         cells.append(Cell(code, CellTypeEnum.CODE))

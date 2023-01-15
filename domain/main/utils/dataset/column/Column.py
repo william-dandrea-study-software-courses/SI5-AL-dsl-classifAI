@@ -24,5 +24,8 @@ class Column(ABC):
     def get_name(self) -> str:
         return self.__name
 
+    def get_default_transformation(self) -> bool:
+        return self.__default_transformation
+
     def get_cleaning_method(self):
         return self.__cleaning_method

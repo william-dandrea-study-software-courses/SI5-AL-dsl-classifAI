@@ -19,3 +19,9 @@ class BooleanColumn(Column):
 
     def get_is_label(self) -> bool:
         return self.__is_label
+
+    def get_true_value(self) -> str:
+        return self.__true_value
+
+    def get_false_value(self) -> str:
+        return self.__false_value

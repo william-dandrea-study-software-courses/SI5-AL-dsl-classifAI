@@ -6,5 +6,5 @@
 6. node-caps: yes, no.
 7. deg-malig: 1, 2, 3.
 8. breast: left, right.
-9. breast-quad: left-up, left-low, right-up, right-low, central.
+9. breast-quad: left_up, left_low, right_up, right_low, central.
 10. irradiat: yes, no.

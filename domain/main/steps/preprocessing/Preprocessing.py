@@ -38,12 +38,12 @@ class Preprocessing(Step):
         load_description_content = f"## We import the dataset"
         cells.append(Cell(load_description_content, CellTypeEnum.MARKDOWN))
 
-        cell_code_load = f'def load_dataset(dataset_url: str) -> pd.DataFrame: \n' \
-                    f'\tcurrent_dataset = pd.read_csv(dataset_url, header={1 if self.__is_dataset_contains_headers_name else None}) \n' \
+        cell_code_load = f'def load_dataset() -> pd.DataFrame: \n' \
+                    f'\tcurrent_dataset = pd.read_csv("{self.__url_dataset}", header={1 if self.__is_dataset_contains_headers_name else None}) \n' \
                     f'\tcurrent_dataset.columns = {[col.get_name() for col in self.__dataset.get_columns()]} \n' \
                     f'\treturn current_dataset \n' \
                     f'\n' \
-                    f'dataframe: pd.DataFrame = load_dataset("{self.__url_dataset}") \n' \
+                    f'dataframe: pd.DataFrame = load_dataset() \n' \
                     f'dataframe'
         cells.append(Cell(cell_code_load, CellTypeEnum.CODE))
 
@@ -59,7 +59,8 @@ class Preprocessing(Step):
                 cleaning_method: ReplaceLineCleaningMethod = col.get_cleaning_method()
                 cell_code_cleaning += f'\tdataframe["{col.get_name()}"] = dataframe["{col.get_name()}"].replace(np.nan, {cleaning_method.get_replace_by()})\n'
 
-        cell_code_cleaning += f'\treturn dataframe.reset_index()\n'
+        cell_code_cleaning += f'\treturn dataframe.reset_index(drop=True)\n'
+        cell_code_cleaning += f'\ndataframe: pd.DataFrame = load_dataset()\n'
         cell_code_cleaning += f'\ncleaned_dataframe = clean_dataset(dataframe)\n'
         cell_code_cleaning += f'cleaned_dataframe\n'
         cells.append(Cell(cell_code_cleaning, CellTypeEnum.CODE))

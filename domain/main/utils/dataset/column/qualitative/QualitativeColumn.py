@@ -10,3 +10,6 @@ class QualitativeColumn(Column):
 
     def add_possible_value(self, value: str):
         self.__possible_values.append(value)
+
+    def get_possible_values(self) -> List[str]:
+        return self.__possible_values

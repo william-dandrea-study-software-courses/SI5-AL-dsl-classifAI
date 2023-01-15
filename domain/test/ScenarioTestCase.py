@@ -7,6 +7,7 @@ from steps.preprocessing.Preprocessing import Preprocessing
 from steps.preprocessing.cleaning.DeleteLineCleaningMethod import DeleteLineCleaningMethod
 from steps.preprocessing.cleaning.ReplaceLineCleaningMethod import ReplaceLineCleaningMethod
 from steps.splitting.Splitting import Splitting
+from steps.transformation.Transformation import Transformation
 from utils.dataset.Dataset import Dataset
 from utils.dataset.column.BooleanColumn import BooleanColumn
 from utils.dataset.column.Column import Column
@@ -84,7 +85,7 @@ class ScenarioTestCase(unittest.TestCase):
         node_caps_column: BooleanColumn = BooleanColumn()
         node_caps_column.set_name("node-caps")
         node_caps_column.set_true_value("yes")
-        node_caps_column.set_false_value("false")
+        node_caps_column.set_false_value("no")
 
         deg_malig_column: DiscreteQuantitativeColumn() = DiscreteQuantitativeColumn()
         deg_malig_column.set_name("deg-malig")
@@ -96,16 +97,16 @@ class ScenarioTestCase(unittest.TestCase):
 
         breast_quad_column: NominalQualitativeColumn = NominalQualitativeColumn()
         breast_quad_column.set_name("breast-quad")
-        breast_quad_column.add_possible_value("left-up")
-        breast_quad_column.add_possible_value("left-low")
-        breast_quad_column.add_possible_value("right-up")
-        breast_quad_column.add_possible_value("right-low")
+        breast_quad_column.add_possible_value("left_up")
+        breast_quad_column.add_possible_value("left_low")
+        breast_quad_column.add_possible_value("right_up")
+        breast_quad_column.add_possible_value("right_low")
         breast_quad_column.add_possible_value("central")
 
         irradiat_column: BooleanColumn = BooleanColumn()
         irradiat_column.set_name("irradiat")
         irradiat_column.set_true_value("yes")
-        irradiat_column.set_true_value("no")
+        irradiat_column.set_false_value("no")
         irradiat_column.set_is_label()
 
 
@@ -140,10 +141,13 @@ class ScenarioTestCase(unittest.TestCase):
         application.add_splitting(splitting)
 
         # ================================================================================== #
-        # Mining
+        # Transformation
         # ================================================================================== #
 
-        with open('my_notebook.ipynb', 'w', encoding='utf-8') as f:
+        transformation: Transformation = Transformation(dataset=dataset)
+        application.add_transformation(transformation)
+
+        with open('my_notebook2.ipynb', 'w', encoding='utf-8') as f:
             nbformat.write(application.generate(), f)
 
 
