@@ -11,6 +11,7 @@ class Comparaison(Step):
     def __init__(self):
         super().__init__()
         self._imports.append(Import("matplotlib.pyplot", None, "plt"))
+        self._imports.append(Import("sklearn.metrics", "accuracy_score, precision_score, recall_score, f1_score, roc_auc_score"))
 
         self.__charts: List[Chart] = []
 

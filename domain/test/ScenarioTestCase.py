@@ -5,6 +5,7 @@ import nbformat
 from App import App
 from steps.comparaison.Comparaison import Comparaison
 from steps.comparaison.chart.charts.CombinaisonChart import CombinaisonChart
+from steps.comparaison.chart.charts.ScoreChart import ScoreChart, ChartScoreEnum
 from steps.mining.Mining import Mining
 from steps.mining.classifier.classifiers.DecisionTreeClassifier import DecisionTreeClassifier
 from steps.mining.classifier.classifiers.KNeighborClassifier import KNeighborClassifier
@@ -211,6 +212,18 @@ class ScenarioTestCase(unittest.TestCase):
         random_forest_classifier_combinaison_chart: CombinaisonChart = CombinaisonChart(random_forest_classifier)
         comparaison.add_chart(random_forest_classifier_combinaison_chart)
 
+        score_chart: ScoreChart = ScoreChart()
+        score_chart.add_score(ChartScoreEnum.F1_SCORE)
+        score_chart.add_score(ChartScoreEnum.AUC)
+        score_chart.add_score(ChartScoreEnum.RECALL)
+        score_chart.add_score(ChartScoreEnum.PRECISION)
+
+        score_chart.add_classifier(svc_classifier)
+        score_chart.add_classifier(decision_tree_classifier)
+        score_chart.add_classifier(k_neighbor_classifier)
+        score_chart.add_classifier(mlpc_classifier)
+        score_chart.add_classifier(random_forest_classifier)
+        comparaison.add_chart(score_chart)
 
         application.add_comparaison(comparaison)
 
