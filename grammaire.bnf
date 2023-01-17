@@ -1,0 +1,42 @@
+App:
+    var_name = 'create_app()'
+    
+    Step
+
+    var_name'.generate()'
+    
+Step:
+    Preprocessing | Splitting | Transformation | Mining | Comparaison
+
+Preprocessing:
+    var_name'.preprocessing.dataset.path''(''path=' String ')'
+
+    var_name'.preprocessing.dataset.'Column
+
+Column:
+    BooleanColumn | QualitativeColumn | QuantitativeColumn
+
+BooleanColumn:
+    'define_bool_col''(''name=' String ',' 'true_value=' String ',' 'false_value=' String ',' 'Cleaning_method=' ? ')'
+
+QualitativeColumn:
+    QualitativeNominal | QualitativeOrdinal
+
+QualitativeNominal:
+    'define_quali_nominal_col''(''nominal' ',' 'name=' String ',' 'values=' List ')'
+
+QualitativeOrdinal:
+    'define_quali_nominal_col''(''ordinal' ',' 'name=' String ',' 'values=' List ')'
+
+QuantitativeColumn:
+    QuantitativeDiscrete | QuantitativeContinuous
+
+QuantitativeDiscrete:
+    'define_quanti_discrete_col''(''discrete'',' 'name=' String ')'
+
+QuantitativeContinuous:
+    'define_quanti_continuous_col''(''continuous'',' 'name=' String ')'
+
+
+
+
