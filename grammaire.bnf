@@ -97,7 +97,7 @@ MinSampleSplit::=
     '.min_sample_split''(' '[' Int ( ',' Int )* ']' ')'
 
 NEstimators::= 
-    '.min_sample_split''(' '[' Int ( ',' Int )* ']' ')'
+    '.n_estimators''(' '[' Int ( ',' Int )* ']' ')'
 
 Solver::= 
     '.solver''(' '[' ( <Lbfgs> | <Sgd> | <Adam> ) ( ','<Lbfgs> | ','<Sgd> | ','<Adam> )* ']'')' 

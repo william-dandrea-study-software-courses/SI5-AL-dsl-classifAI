@@ -4,7 +4,7 @@ my_app = create_app()
 # Preprocessing #
 #################
 
-my_app.preprocessing.dataset.path(path='./breast_cancer.csv')
+my_app.preprocessing.dataset(path='./breast_cancer.csv')
 
 my_app.preprocessing.data.define_bool_col(
     name='Class',
@@ -85,23 +85,17 @@ my_app.transformation.dataset(my_app.preprocessing.data)
 
 my_app.classifier.svc_classifier(C=[1.0, 2.0])
 
-my_app.classifier.decision_tree_classifier(
-    splitter=[SplitterHPEnum.BEST, SplitterHPEnum.RANDOM],
-    criterion=[CriterionHPEnum.GINI, CriterionHPEnum.ENTROPY],
-    min_samples_split=[10, 12]
-)
+my_app.classifier.decision_tree_classifier().splitters(
+    ['BEST', 'RANDOM']).criterion(['GINI', 'ENTROPY']).min_sample_split([10, 12])
 
-my_app.classifier.k_neighbor_classifier(n_neighors=[5, 8])
 
-my_app.classifier.mlpc_classifier(
-    solver=[SolverHPEnum.SGD, SolverHPEnum.ADAM],
-    activation=[ActivationHPEnum.TANH, ActivationHPEnum.IDENTITY]
-)
+my_app.classifier.k_neighbor_classifier().n_neighbord([5, 8])
 
-my_app.classifier.random_forest_classifier(
-    criterion=[CriterionHPEnum.GINI, CriterionHPEnum.ENTROPY],
-    n_estimators=[5, 2]
-)
+my_app.classifier.mlpc_classifier().solver(
+    ['SGD', 'ADAM']).activation(['TANH', 'IDENTITY'])
+
+my_app.classifier.random_forest_classifier().criterion(
+    ['GINI', 'ENTROPY']).n_estimators([5, 2])
 
 ##################
 # Comparaison    #
