@@ -6,6 +6,8 @@ from dsl.main.comparaison.chart.DslChart import DslChart
 from dsl.main.comparaison.chart.DslChartScoreEnum import DslChartScoreEnum
 from dsl.main.comparaison.chart.ScoreDslChart import ScoreDslChart
 from dsl.main.mining.classifier.DslClassifier import DslClassifier
+from steps.comparaison.Comparaison import Comparaison
+
 
 class DslComparaison(DslStep):
     def __init__(self):
@@ -17,3 +19,6 @@ class DslComparaison(DslStep):
 
     def add_score_chart(self, scores: List[str], classifiers: List[DslClassifier]):
         self.__charts.append(ScoreDslChart(scores, classifiers))
+
+    def export(self) -> Comparaison:
+        return None

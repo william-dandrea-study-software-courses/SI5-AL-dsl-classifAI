@@ -7,6 +7,7 @@ from dsl.main.mining.classifier.KNeighborDslClassifier import KNeighborDslClassi
 from dsl.main.mining.classifier.MlpcDslClassifier import MlpcDslClassifier
 from dsl.main.mining.classifier.RandomForestDslClassifier import RandomForestDslClassifier
 from dsl.main.mining.classifier.SvcDslClassifier import SvcDslClassifier
+from steps.mining.Mining import Mining
 
 
 class DslMining(DslStep):
@@ -39,3 +40,6 @@ class DslMining(DslStep):
         classifier: DecisionTreeDslClassifier = DecisionTreeDslClassifier()
         self.__classifiers.append(classifier)
         return classifier
+
+    def export(self) -> Mining:
+        return None

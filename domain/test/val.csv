@@ -1,0 +1,14 @@
+,index,Class,age,menopause,tumor-size,inv-nodes,node-caps,deg-malig,breast,breast-quad
+83,83,no-recurrence-events,50-59,ge40,15-19,0-2,no,2,right,left_low
+199,204,recurrence-events,50-59,premeno,25-29,0-2,no,2,left,right_up
+34,34,no-recurrence-events,50-59,ge40,10-14,0-2,no,1,left,left_up
+129,129,no-recurrence-events,40-49,premeno,35-39,9-11,yes,2,right,left_up
+49,49,no-recurrence-events,40-49,premeno,20-24,0-2,no,1,right,left_low
+110,110,no-recurrence-events,50-59,ge40,25-29,0-2,no,1,left,left_low
+250,257,recurrence-events,40-49,premeno,20-24,3-5,yes,2,left,left_low
+248,255,recurrence-events,40-49,premeno,30-34,6-8,yes,3,right,left_up
+229,236,recurrence-events,40-49,premeno,25-29,0-2,no,2,right,left_low
+105,105,no-recurrence-events,40-49,premeno,30-34,0-2,no,1,right,left_up
+107,107,no-recurrence-events,30-39,premeno,40-44,0-2,no,2,right,right_up
+89,89,no-recurrence-events,40-49,premeno,40-44,0-2,no,1,right,left_up
+149,150,no-recurrence-events,50-59,ge40,25-29,15-17,yes,3,right,left_up

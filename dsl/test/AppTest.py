@@ -29,6 +29,7 @@ class MyTestCase(unittest.TestCase):
             name='node_caps',
             true_value='yes',
             false_value='no',
+            cleaning_method=ReplaceLineCleaningMethod(False),
         )
 
         my_app.preprocessing.dataset.define_boolean_col(
@@ -123,6 +124,7 @@ class MyTestCase(unittest.TestCase):
 
         my_app.comparaison.add_score_chart(scores=["F1_SCORE", "AUC"], classifiers=[svc_cls, decision_tree_cls])
 
+        my_app.generate()
 
 
 

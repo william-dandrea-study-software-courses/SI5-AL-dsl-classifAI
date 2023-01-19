@@ -1,4 +1,5 @@
 from dsl.main.DslStep import DslStep
+from steps.splitting.Splitting import Splitting
 
 
 class DslSplitting(DslStep):
@@ -13,3 +14,6 @@ class DslSplitting(DslStep):
         self.__train_percent = train_percent
         self.__validation_percent = validation_percent
         self.__test_percent = test_percent
+
+    def export(self) -> Splitting:
+        return None
