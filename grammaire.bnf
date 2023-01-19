@@ -1,42 +1,152 @@
-App:
-    var_name = 'create_app()'
+App::= 
+    <Name> '= create_app()'
     
-    Step
+    ( <Step> )+
 
-    var_name'.generate()'
+    <Name>'.generate()'
     
-Step:
-    Preprocessing | Splitting | Transformation | Mining | Comparaison
+Step::= <Preprocessing> | <Splitting> | <Transformation> | <Mining> | <Comparaison>
 
-Preprocessing:
-    var_name'.preprocessing.dataset.path''(''path=' String ')'
+#####################################################
+# Grammar part about how to build the Preprocessing #
+#####################################################
 
-    var_name'.preprocessing.dataset.'Column
+Preprocessing::=
+    <Name>'.preprocessing.dataset''(''path=' String ')'
+    ( <Name>'.preprocessing.dataset.'Column )+
+    
 
-Column:
-    BooleanColumn | QualitativeColumn | QuantitativeColumn
+Column::= <BooleanColumn> | <QualitativeColumn> | <QuantitativeColumn>
 
-BooleanColumn:
-    'define_bool_col''(''name=' String ',' 'true_value=' String ',' 'false_value=' String ',' 'Cleaning_method=' ? ')'
+BooleanColumn::=
+    '# Replace parameters for true and false values if this does not fit for your case'
+    'define_bool_col''(''name=' String ',' 'true_value=' 'yes' ',' 'false_value=' 'no' ',' 'Cleaning_method=' <CleaningMethod> ')'
 
-QualitativeColumn:
-    QualitativeNominal | QualitativeOrdinal
+CleaningMethod::= <DeleteLineCleaningMethod> | <ReplaceLineCleaningMethod>
 
-QualitativeNominal:
-    'define_quali_nominal_col''(''nominal' ',' 'name=' String ',' 'values=' List ')'
+DeleteLineCleaningMethod::= 'DeleteLineCleaningMethod''('')'
 
-QualitativeOrdinal:
-    'define_quali_nominal_col''(''ordinal' ',' 'name=' String ',' 'values=' List ')'
+ReplaceLineCleaningMethod::= 'ReplaceLineCleaningMethode''(''replace_by=''False'')'
 
-QuantitativeColumn:
-    QuantitativeDiscrete | QuantitativeContinuous
+QualitativeColumn::=
+    <QualitativeNominal> | <QualitativeOrdinal>
 
-QuantitativeDiscrete:
-    'define_quanti_discrete_col''(''discrete'',' 'name=' String ')'
+QualitativeNominal::=
+    'define_quali_nominal_col''(''name=' String ',' 'values=' List ')'
 
-QuantitativeContinuous:
-    'define_quanti_continuous_col''(''continuous'',' 'name=' String ')'
+QualitativeOrdinal::=
+    'define_quali_nominal_col''(''name=' String ',' 'values=' List ')'
 
+QuantitativeColumn::=
+    <QuantitativeDiscrete> | <QuantitativeContinuous>
 
+QuantitativeDiscrete::=
+    'define_quanti_discrete_col''(' 'name=' String ')'
 
+QuantitativeContinuous::=
+    'define_quanti_continuous_col''(''name=' String ')'
 
+##################################################
+# Grammar part about how to build the Splitting  #
+##################################################
+
+Splitting::=
+    <Name>'.splitting.train_validation_test''(''train_percent=' Int ',' 'validation_percent=' Int ',' 'test_percent=' Int ')'
+
+######################################################
+# Grammar part about how to build the Transformation #
+######################################################
+
+Transformation::=
+    <Name>'.transformation.dataset''(''dataset=' String ')'
+
+##############################################
+# Grammar part about how to build the Mining #
+##############################################
+
+Mining::=
+    ( <Name>'.mining.'<Classifier> )+
+
+Classifier::=
+    <DecisionTreeClassifier> | <RandomForestClassifier> | <MLPCClassifier> | <SVCClassifier> | <KNeighborClassifier>
+
+DecisionTreeClassifier::=
+    'decision_tree_classifier''('')' (HyperParameters)+
+
+RandomForestClassifier::=
+    'random_forest_classifier''('')' (HyperParameters)+
+
+MLPCClassifier::=
+    'mlpc_classifier''('')' (HyperParameters)+
+
+SVCClassifier::=
+    'svc_classifier''('')' (HyperParameters)+
+
+KNeighborClassifier::=
+    'k_neighbor_classifier''('')' (HyperParameters)+
+
+HyperParameters::=  <Splitter> | <Criterion> | <MinSampleSplit> | <NEstimators> | <Solver> | <Activation> | <CValues> | <NNeighbors>
+
+Splitter::=
+    '.splitters''(' '[' ( <Best> | <Random> ) ( ','<Best> | ','<Random> )* ']' ')'
+
+Criterion::=
+    '.criterion''(' '[' ( <Gini> | <Entropy> | <LogLoss> ) ( ','<Gini> | ','<Entropy> | ',' <LogLoss> )* ']' ')'
+
+MinSampleSplit::= 
+    '.min_sample_split''(' '[' Int ( ',' Int )* ']' ')'
+
+NEstimators::= 
+    '.min_sample_split''(' '[' Int ( ',' Int )* ']' ')'
+
+Solver::= 
+    '.solver''(' '[' ( <Lbfgs> | <Sgd> | <Adam> ) ( ','<Lbfgs> | ','<Sgd> | ','<Adam> )* ']'')' 
+
+Activation::=
+    '.activation''(' '[' ( <Identity> | <Logistic> | <Tanh> | <Relu> ) ( ','<Identity> | ','<Logistic> | ','<Tanh> | ','<Relu> ) ']' ')'
+
+CValues::= 
+    '.C''(''[' Int ( ',' Int )* ']' ')'
+
+Neighbors::=
+    '.n_neighbors''(' '[' Int ( ',' Int )* ']' ')'
+
+Best::= 'BEST'
+
+Random::= 'RANDOM'
+
+Gini::= 'GINI'
+
+Entropy::= 'ENTROPY'
+
+LogLoss::= 'LOGLOSS'
+
+Lbfgs::= 'LBFGS'
+
+Sgd::= 'SGD'
+
+Adam::= 'ADAM'
+
+Identity::= 'IDENTITY'
+
+Logistic::= 'LOGISTIC'
+
+Tanh::= 'TANH'
+
+Relu::= 'RELU'
+
+###################################################
+# Grammar part about how to build the Comparaison #
+###################################################
+
+Comparaison::=
+   ( <Name>'.comparaison.'<Chart> )+
+
+Chart::=
+    <CombinaisonChart> | <ScoreChart>
+
+CombinaisonChart::=
+    'combinaison_chart''(''classifier=' <Classifier> ')'
+
+ScoreChart::=
+    'score_chart''(''scores=' List ',' 'classifiers=' List ')'
