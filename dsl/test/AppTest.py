@@ -21,7 +21,8 @@ class MyTestCase(unittest.TestCase):
             name='Class',
             true_value='recurrence_events',
             false_value='no_recurrence_events',
-            cleaning_method=ReplaceLineCleaningMethod(False)
+            cleaning_method=ReplaceLineCleaningMethod(False),
+            use_default_transformation=True
         )
 
         my_app.preprocessing.dataset.define_boolean_col(
