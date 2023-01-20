@@ -8,6 +8,15 @@ from utils.dataset.column.quantitative.ContinuousQuantitativeColumn import Conti
 class QuantitativeContinuousDslColumn(QuantitativeDslColumn):
     def __init__(self, name: str, use_default_transformation: bool, cleaning_method: DslCleaningMethod):
         super().__init__(name, use_default_transformation, cleaning_method)
+        self.__column: ContinuousQuantitativeColumn = None
 
     def export(self) -> ContinuousQuantitativeColumn:
-        return cast(ContinuousQuantitativeColumn, self._export_quantitative_column())
+        if self.__column is not None:
+            return self.__column
+
+        self.__column: ContinuousQuantitativeColumn = ContinuousQuantitativeColumn()
+        self.__column.set_name(self._name)
+        self.__column.set_default_transformation(self._use_default_transformation)
+        self.__column.set_cleaning_method(self._cleaning_method.export())
+
+        return self.__column

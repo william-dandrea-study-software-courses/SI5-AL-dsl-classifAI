@@ -15,14 +15,20 @@ class DslApp:
         self.mining: DslMining = DslMining()
         self.comparaison: DslComparaison = DslComparaison()
 
+        self.__app: App = None
+
     def generate(self):
-        app: App = App()
-        app.add_preprocessing(self.preprocessing.export())
-        app.add_splitting(self.splitting.export())
-        app.add_transformation(self.transformation.export())
-        app.add_mining(self.mining.export())
-        app.add_comparaison(self.comparaison.export())
-        return app.generate()
+
+        if self.__app is not None:
+            return self.__app.generate()
+
+        self.__app: App = App()
+        self.__app.add_preprocessing(self.preprocessing.export())
+        self.__app.add_splitting(self.splitting.export())
+        self.__app.add_transformation(self.transformation.export())
+        self.__app.add_mining(self.mining.export())
+        self.__app.add_comparaison(self.comparaison.export())
+        return self.__app.generate()
 
 
 

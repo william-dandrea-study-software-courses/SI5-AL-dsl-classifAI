@@ -1,3 +1,5 @@
+from typing import cast
+
 from dsl.main.preprocessing.cleaning_methods.DeleteLineDslCleaningMethod import DeleteLineDslCleaningMethod
 from dsl.main.preprocessing.cleaning_methods.DslCleaningMethod import DslCleaningMethod
 from dsl.main.preprocessing.cleaning_methods.ReplaceLineDslCleaningMethod import ReplaceLineDslCleaningMethod
@@ -15,17 +17,21 @@ class BooleanDslColumn(DslColumn):
         self.__true_value: str = true_value
         self.__false_value: str = false_value
         self.__is_label: bool = is_label
+        self.__colum: BooleanColumn = None
 
     def export(self) -> BooleanColumn:
-        column: BooleanColumn = BooleanColumn()
-        column.set_true_value(self.__true_value)
-        column.set_false_value(self.__false_value)
-        column.set_name(self._name)
-        column.set_default_transformation(self._use_default_transformation)
+        if self.__colum is not None:
+            return cast(BooleanColumn, self.__colum)
+
+        self.__colum: BooleanColumn = BooleanColumn()
+        self.__colum.set_true_value(self.__true_value)
+        self.__colum.set_false_value(self.__false_value)
+        self.__colum.set_name(self._name)
+        self.__colum.set_default_transformation(self._use_default_transformation)
 
         if self.__is_label:
-            column.set_is_label()
+            self.__colum.set_is_label()
 
-        column.set_cleaning_method(self._cleaning_method.export())
+        self.__colum.set_cleaning_method(self._cleaning_method.export())
 
-        return column
+        return self.__colum

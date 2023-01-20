@@ -19,6 +19,7 @@ class DslDataset:
 
     def __init__(self):
         self.__columns: List[DslColumn] = []
+        self.__dataset: Dataset = None
 
     def define_boolean_col(self, name: str, true_value: str, false_value: str, is_label: bool = False,
                            cleaning_method: DslCleaningMethod = DeleteLineDslCleaningMethod(),
@@ -56,9 +57,12 @@ class DslDataset:
                                             cleaning_method=cleaning_method))
 
     def export(self) -> Dataset:
-        columns: List[Column] = []
+        if self.__dataset is not None:
+            return self.__dataset
+
+        self.__dataset: Dataset = Dataset()
 
         for column in self.__columns:
-            columns.append(column.export())
+            self.__dataset.add_column(column.export())
 
-        return None
+        return self.__dataset

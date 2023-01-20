@@ -46,6 +46,7 @@ class ScenarioTestCase(unittest.TestCase):
         class_column.set_false_value("no-recurrence-events")
         class_column.set_cleaning_method(ReplaceLineCleaningMethod(False))
 
+
         age_column: OrdinalQualitativeColumn = OrdinalQualitativeColumn()
         age_column.set_name("age")
         age_column.add_possible_value("10-19")
@@ -57,6 +58,7 @@ class ScenarioTestCase(unittest.TestCase):
         age_column.add_possible_value("70-79")
         age_column.add_possible_value("80-89")
         age_column.add_possible_value("90-99")
+        age_column.set_default_transformation(True)
 
         menopause_column: NominalQualitativeColumn = NominalQualitativeColumn()
         menopause_column.set_name("menopause")

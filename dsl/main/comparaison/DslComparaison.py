@@ -13,6 +13,7 @@ class DslComparaison(DslStep):
     def __init__(self):
         super().__init__()
         self.__charts: List[DslChart] = []
+        self.__comparaison: Comparaison | None = None
 
     def add_combinaison_chart(self, classifier: DslClassifier):
         self.__charts.append(CombinaisonDslChart(classifier))
@@ -21,4 +22,13 @@ class DslComparaison(DslStep):
         self.__charts.append(ScoreDslChart(scores, classifiers))
 
     def export(self) -> Comparaison:
-        return None
+
+        if self.__comparaison is not None:
+            return self.__comparaison
+
+        self.__comparaison: Comparaison = Comparaison()
+
+        for chart in self.__charts:
+            self.__comparaison.add_chart(chart.export())
+
+        return self.__comparaison
