@@ -13,3 +13,13 @@ class QualitativeColumn(Column):
 
     def get_possible_values(self) -> List[str]:
         return self.__possible_values
+
+    def get_type(self) -> str:
+        return "Qualitative"
+
+    def is_label(self) -> bool:
+        return False
+
+    def get_possible_values(self) -> List[str]:
+        return self.__possible_values
+

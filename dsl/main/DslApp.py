@@ -30,9 +30,5 @@ class DslApp:
         self.__app.add_comparaison(self.comparaison.export())
         return self.__app.generate()
 
-
-
-
-
 def create_app():
     return DslApp()

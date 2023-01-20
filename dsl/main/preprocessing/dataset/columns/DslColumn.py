@@ -12,6 +12,15 @@ class DslColumn(ABC):
         self._use_default_transformation: bool = use_default_transformation
         self._cleaning_method: DslCleaningMethod = cleaning_method
 
+    def get_name(self) -> str:
+        return self._name
+
+    def get_use_default_transformation(self) -> bool:
+        return self._use_default_transformation
+
+    def get_cleaning_method(self) -> DslCleaningMethod:
+        return self._cleaning_method
+
     @abstractmethod
     def export(self) -> Column:
         pass

@@ -56,6 +56,8 @@ class DslDataset:
             QuantitativeContinuousDslColumn(name=name, use_default_transformation=use_default_transformation,
                                             cleaning_method=cleaning_method))
 
+    def get_columns(self) -> List[DslColumn]:
+        return self.__columns
     def export(self) -> Dataset:
         if self.__dataset is not None:
             return self.__dataset

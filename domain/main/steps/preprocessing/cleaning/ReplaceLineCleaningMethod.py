@@ -8,3 +8,6 @@ class ReplaceLineCleaningMethod(CleaningMethod):
 
     def get_replace_by(self):
         return self.__replace_by
+
+    def get_type(self):
+        return f"Replace value by : {self.__replace_by}"

@@ -1,3 +1,10 @@
-class CleaningMethod:
+from abc import abstractmethod, ABC
+
+
+class CleaningMethod(ABC):
     def __init__(self):
-        x = 0
+        pass
+
+    @abstractmethod
+    def get_type(self):
+        return ""

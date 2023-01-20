@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import Enum
+from typing import List
 
 from steps.preprocessing.cleaning.CleaningMethod import CleaningMethod
 from steps.preprocessing.cleaning.DeleteLineCleaningMethod import DeleteLineCleaningMethod
@@ -24,8 +25,20 @@ class Column(ABC):
     def get_name(self) -> str:
         return self.__name
 
+    @abstractmethod
+    def get_type(self) -> str:
+        return "Column"
+
+    @abstractmethod
+    def is_label(self) -> bool:
+        return False
+
+    @abstractmethod
+    def get_possible_values(self) -> List[str]:
+        return []
+
     def get_default_transformation(self) -> bool:
         return self.__default_transformation
 
-    def get_cleaning_method(self):
+    def get_cleaning_method(self) -> CleaningMethod:
         return self.__cleaning_method

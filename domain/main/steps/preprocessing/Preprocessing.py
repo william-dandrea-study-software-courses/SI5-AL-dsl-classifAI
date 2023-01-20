@@ -2,12 +2,15 @@ from typing import List, Tuple
 
 import nbformat
 
+from graphviz import Digraph
+
 from domain.main.steps.Step import Step
 from steps.preprocessing.cleaning.DeleteLineCleaningMethod import DeleteLineCleaningMethod
 from steps.preprocessing.cleaning.ReplaceLineCleaningMethod import ReplaceLineCleaningMethod
 from utils.Cell import Cell, CellTypeEnum
 from utils.Import import Import
 from utils.dataset.Dataset import Dataset
+from utils.utils import generate_markdown_array
 
 
 class Preprocessing(Step):
@@ -17,8 +20,6 @@ class Preprocessing(Step):
         self.__url_dataset = url_dataset
         self.__is_dataset_contains_headers_name = is_dataset_contains_headers_name
         self.__dataset: Dataset = None
-
-
 
     def add_dataset(self, dataset: Dataset):
         self.__dataset = dataset
@@ -32,19 +33,23 @@ class Preprocessing(Step):
 
         cells: List[Cell] = [Cell("import warnings\nwarnings.filterwarnings('ignore')", CellTypeEnum.CODE)]
 
-        description_content = f"# Préprocessing"
+        self.__create_mindmap_image()
+        cells.append(Cell('![alt text](mindmap.png "Title")', CellTypeEnum.MARKDOWN))
+
+        description_content = f"# Préprocessing" + '\n'
+        description_content += self.__generate_table_with_columns_details()
         cells.append(Cell(description_content, CellTypeEnum.MARKDOWN))
 
         load_description_content = f"## We import the dataset"
         cells.append(Cell(load_description_content, CellTypeEnum.MARKDOWN))
 
         cell_code_load = f'def load_dataset() -> pd.DataFrame: \n' \
-                    f'\tcurrent_dataset = pd.read_csv("{self.__url_dataset}", header={1 if self.__is_dataset_contains_headers_name else None}) \n' \
-                    f'\tcurrent_dataset.columns = {[col.get_name() for col in self.__dataset.get_columns()]} \n' \
-                    f'\treturn current_dataset \n' \
-                    f'\n' \
-                    f'dataframe: pd.DataFrame = load_dataset() \n' \
-                    f'dataframe'
+                         f'\tcurrent_dataset = pd.read_csv("{self.__url_dataset}", header={1 if self.__is_dataset_contains_headers_name else None}) \n' \
+                         f'\tcurrent_dataset.columns = {[col.get_name() for col in self.__dataset.get_columns()]} \n' \
+                         f'\treturn current_dataset \n' \
+                         f'\n' \
+                         f'dataframe: pd.DataFrame = load_dataset() \n' \
+                         f'dataframe'
         cells.append(Cell(cell_code_load, CellTypeEnum.CODE))
 
         cell_code_cleaning = f'def clean_dataset(dataframe: pd.DataFrame) -> pd.DataFrame:\n' \
@@ -53,7 +58,7 @@ class Preprocessing(Step):
         for col in self.__dataset.get_columns():
 
             if col.get_cleaning_method().__class__.__name__ == DeleteLineCleaningMethod.__name__:
-                cell_code_cleaning += f'\tdataframe = dataframe[dataframe["{col.get_name()}"].notna()]\n' \
+                cell_code_cleaning += f'\tdataframe = dataframe[dataframe["{col.get_name()}"].notna()]\n'
 
             if col.get_cleaning_method().__class__.__name__ == ReplaceLineCleaningMethod.__name__:
                 cleaning_method: ReplaceLineCleaningMethod = col.get_cleaning_method()
@@ -67,4 +72,35 @@ class Preprocessing(Step):
 
         return cells
 
+    def __generate_table_with_columns_details(self) -> str:
+        return generate_markdown_array(
+            column_names=["Column name", "Column type", "Use default transformation ?", "Cleaning method", "Possible values", "Is Label ?"],
+            columns_values=[
+                [
+                    column.get_name(),
+                    column.get_type(),
+                    "Yes" if column.get_default_transformation() else "No",
+                    column.get_cleaning_method().get_type(),
+                    " / ".join(column.get_possible_values()),
+                    "Yes" if column.is_label() else "No"
+                ] for column in self.__dataset.get_columns()
+            ]
+        )
+
+
+
+    def __create_mindmap_image(self):
+        data = {'Parent': ['Child 1', 'Child 2'], 'Child 1': ['Subchild 1', 'Subchild 2'], 'Child 2': ['Subchild 3']}
+
+        graph = Digraph(format='png')
+        graph.attr(rankdir='LR', size='8,5')
+        graph.attr('node', shape='circle')
+
+        root = 'Curriculum'
+        days = ['day 1', 'day 2', 'day 3']
+
+        for day in days:
+            graph.edge(root, day, "tst")
+
+        graph.render('sg', view=True)
 
