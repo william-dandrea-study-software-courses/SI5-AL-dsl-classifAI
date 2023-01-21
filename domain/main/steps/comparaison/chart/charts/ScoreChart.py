@@ -68,3 +68,13 @@ class ScoreChart(Chart):
         cells.append(Cell(code, CellTypeEnum.CODE))
 
         return cells
+
+
+    def description_charting_infos(self):
+        scores = [{
+            "name": " / ".join([f"{scr.value}" for scr in self.__scores]),
+            "from": [c.get_grid_search_name() for c in self.__classifiers]
+        }]
+
+
+        return [], scores

@@ -28,6 +28,8 @@ class Mining(Step):
     def add_classifier(self, classifier: Classifier):
         self.__classifiers.append(classifier)
 
+    def get_classifiers(self) -> List[Classifier]:
+        return self.__classifiers
     def export(self) -> List[Cell]:
         description: str = "# Mining \n"
         description += self.__generate_table_with_mining_details()

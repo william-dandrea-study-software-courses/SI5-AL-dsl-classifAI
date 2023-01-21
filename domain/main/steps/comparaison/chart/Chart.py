@@ -12,3 +12,7 @@ class Chart(ABC):
     @abstractmethod
     def export(self) -> List[Cell]:
         pass
+
+    @abstractmethod
+    def description_charting_infos(self):
+        pass

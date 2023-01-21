@@ -1,8 +1,11 @@
 from typing import List, Tuple
 
 import nbformat
+import networkx as nx
+import numpy as np
 
 from graphviz import Digraph
+from matplotlib import pyplot as plt
 
 from domain.main.steps.Step import Step
 from steps.preprocessing.cleaning.DeleteLineCleaningMethod import DeleteLineCleaningMethod
@@ -33,7 +36,6 @@ class Preprocessing(Step):
 
         cells: List[Cell] = [Cell("import warnings\nwarnings.filterwarnings('ignore')", CellTypeEnum.CODE)]
 
-        self.__create_mindmap_image()
         cells.append(Cell('![alt text](mindmap.png "Title")', CellTypeEnum.MARKDOWN))
 
         description_content = f"# Préprocessing" + '\n'
@@ -86,21 +88,3 @@ class Preprocessing(Step):
                 ] for column in self.__dataset.get_columns()
             ]
         )
-
-
-
-    def __create_mindmap_image(self):
-        data = {'Parent': ['Child 1', 'Child 2'], 'Child 1': ['Subchild 1', 'Subchild 2'], 'Child 2': ['Subchild 3']}
-
-        graph = Digraph(format='png')
-        graph.attr(rankdir='LR', size='8,5')
-        graph.attr('node', shape='circle')
-
-        root = 'Curriculum'
-        days = ['day 1', 'day 2', 'day 3']
-
-        for day in days:
-            graph.edge(root, day, "tst")
-
-        graph.render('sg', view=True)
-
