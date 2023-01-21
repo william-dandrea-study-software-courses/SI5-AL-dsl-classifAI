@@ -24,6 +24,9 @@ class Preprocessing(Step):
         self.__is_dataset_contains_headers_name = is_dataset_contains_headers_name
         self.__dataset: Dataset = None
 
+    def get_url_dataset(self) -> str:
+        return self.__url_dataset
+
     def add_dataset(self, dataset: Dataset):
         self.__dataset = dataset
 
@@ -36,7 +39,7 @@ class Preprocessing(Step):
 
         cells: List[Cell] = [Cell("import warnings\nwarnings.filterwarnings('ignore')", CellTypeEnum.CODE)]
 
-        cells.append(Cell('![alt text](mindmap.png "Title")', CellTypeEnum.MARKDOWN))
+        cells.append(Cell(f'![alt text]({f"{self.__url_dataset}_mindmap.png"} "Mindmap")', CellTypeEnum.MARKDOWN))
 
         description_content = f"# Préprocessing" + '\n'
         description_content += self.__generate_table_with_columns_details()

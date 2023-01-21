@@ -135,7 +135,6 @@ class App:
         pos_y_cls = 0
 
         for index, score in enumerate(scores):
-            print(index, score)
             new_labels[X_START + index] = score["name"]
             new_positions[X_START + index] = (150, pos_y_cls)
             new_edges += [(7, X_START + index)]
@@ -184,8 +183,6 @@ class App:
 
         nodes = np.arange(0, len(labels)).tolist()
 
-        print(len(edges), len(edge_color))
-
         G.add_nodes_from(nodes)
         G.add_edges_from(edges)
 
@@ -195,7 +192,7 @@ class App:
         # , connectionstyle="arc3,rad=0.05"
 
         plt.title("Analysis representation")
-        plt.savefig("mindmap.png")
+        plt.savefig(f"{self.__preprocessing.get_url_dataset()}_mindmap.png")
         # plt.show()
 
     def __find_element_by_name(self, name, classifiers_arr):
