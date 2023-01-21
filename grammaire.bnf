@@ -1,6 +1,6 @@
-App::= 
+App::=
     <AppName> '= create_app()'
-    
+
     ( <Step> )+
 
     <AppName>'.generate()'
@@ -8,7 +8,7 @@ App::=
 AppName::= <Name>
 
 Name::= String
-    
+
 Step::= <Preprocessing> | <Splitting> | <Transformation> | <Mining> | <Comparaison>
 
 #####################################################
@@ -18,13 +18,13 @@ Step::= <Preprocessing> | <Splitting> | <Transformation> | <Mining> | <Comparais
 Preprocessing::=
     <AppName>'.preprocessing.dataset_file''(''path=' String ')'
     ( <AppName>'.preprocessing.dataset.'Column )+
-    
+
 
 Column::= <BooleanColumn> | <QualitativeColumn> | <QuantitativeColumn>
 
 BooleanColumn::=
     '# Replace parameters for true and false values if this does not fit for your case'
-    'define_bool_col''(''name=' String ',' 'true_value=' 'yes' ',' 'false_value=' 'no' ',' 'is_label=' 'False' ',' ( 'Cleaning_method=' <CleaningMethod> )? ')'
+    'define_bool_col''(''name=' String ',' 'true_value=' 'yes' ',' 'false_value=' 'no' ',' 'is_label=' 'False' ',' ( 'Cleaning_method=' <CleaningMethod> )? ',' ( 'use_default_transormation=' Bool )? ')'
 
 CleaningMethod::= <DeleteLineCleaningMethod> | <ReplaceLineCleaningMethod>
 
@@ -36,19 +36,19 @@ QualitativeColumn::=
     <QualitativeNominal> | <QualitativeOrdinal>
 
 QualitativeNominal::=
-    'define_quali_nominal_col''(''name=' String ',' 'values=' List ')'
+    'define_quali_nominal_col''(''name=' String ',' 'values=' List ',' ( 'Cleaning_method=' <CleaningMethod> )? ',' ( 'use_default_transormation=' Bool )? ')'
 
 QualitativeOrdinal::=
-    'define_quali_nominal_col''(''name=' String ',' 'values=' List ')'
+    'define_quali_nominal_col''(''name=' String ',' 'values=' List ',' ( 'Cleaning_method=' <CleaningMethod> )? ',' ( 'use_default_transormation=' Bool )? ')'
 
 QuantitativeColumn::=
     <QuantitativeDiscrete> | <QuantitativeContinuous>
 
 QuantitativeDiscrete::=
-    'define_quanti_discrete_col''(' 'name=' String ')'
+    'define_quanti_discrete_col''(' 'name=' String ',' ( 'Cleaning_method=' <CleaningMethod> )? ',' ( 'use_default_transormation=' Bool )? ')'
 
 QuantitativeContinuous::=
-    'define_quanti_continuous_col''(''name=' String ')'
+    'define_quanti_continuous_col''(''name=' String ',' ( 'Cleaning_method=' <CleaningMethod> )? ',' ( 'use_default_transormation=' Bool )? ')'
 
 ##################################################
 # Grammar part about how to build the Splitting  #
@@ -114,19 +114,19 @@ Splitter::=
 Criterion::=
     '.criterion''(' '[' ( <Gini> | <Entropy> | <LogLoss> ) ( ','<Gini> | ','<Entropy> | ',' <LogLoss> )* ']' ')'
 
-MinSampleSplit::= 
+MinSampleSplit::=
     '.min_sample_split''(' '[' Int ( ',' Int )* ']' ')'
 
-NEstimators::= 
+NEstimators::=
     '.n_estimators''(' '[' Int ( ',' Int )* ']' ')'
 
-Solver::= 
-    '.solver''(' '[' ( <Lbfgs> | <Sgd> | <Adam> ) ( ','<Lbfgs> | ','<Sgd> | ','<Adam> )* ']'')' 
+Solver::=
+    '.solver''(' '[' ( <Lbfgs> | <Sgd> | <Adam> ) ( ','<Lbfgs> | ','<Sgd> | ','<Adam> )* ']'')'
 
 Activation::=
     '.activation''(' '[' ( <Identity> | <Logistic> | <Tanh> | <Relu> ) ( ','<Identity> | ','<Logistic> | ','<Tanh> | ','<Relu> ) ']' ')'
 
-CValues::= 
+CValues::=
     '.C''(''[' Int ( ',' Int )* ']' ')'
 
 Neighbors::=
