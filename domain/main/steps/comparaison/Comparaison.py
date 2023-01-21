@@ -28,6 +28,18 @@ class Comparaison(Step):
 
         return cells
 
+    def get_description_charting_infos(self):
+        description_infos_comparaison = []
+        description_infos_score = []
+        for chart in self.__charts:
+            dsr_cpr, dsr_scr = chart.description_charting_infos()
+            description_infos_comparaison += dsr_cpr
+            description_infos_score += dsr_scr
+
+        return description_infos_comparaison, description_infos_score
+
+
+
     def __comparaison_chart_export(self) -> str:
         code: str = f'def comparaison_chart(grid_search_name):' + '\n'
         code += f'\tresults = grid_search_name.cv_results_' + '\n'

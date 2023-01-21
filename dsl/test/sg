@@ -1,7 +1,0 @@
-digraph {
-	rankdir=LR size="8,5"
-	node [shape=circle]
-	Curriculum -> "day 1" [label=tst]
-	Curriculum -> "day 2" [label=tst]
-	Curriculum -> "day 3" [label=tst]
-}

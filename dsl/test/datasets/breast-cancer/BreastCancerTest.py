@@ -1,18 +1,15 @@
 import os
 import unittest
-from enum import Enum
 
 import nbformat
 
 from dsl.main.DslApp import create_app
 from dsl.main.preprocessing.cleaning_methods.ReplaceLineDslCleaningMethod import ReplaceLineDslCleaningMethod
-from steps.preprocessing.cleaning.ReplaceLineCleaningMethod import ReplaceLineCleaningMethod
 
 
 class MyTestCase(unittest.TestCase):
+    def test_something(self):
 
-
-    def test_launch_app(self):
         my_app = create_app()
 
         #################
@@ -38,15 +35,16 @@ class MyTestCase(unittest.TestCase):
             values=['lt40', 'ge40', 'premeno']
         )
 
-
         my_app.preprocessing.dataset.define_qualitative_ordinal_col(
             name='tumor_size',
-            values=["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59"],
+            values=["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54",
+                    "55-59"],
         )
 
         my_app.preprocessing.dataset.define_qualitative_ordinal_col(
             name='inv_nodes',
-            values=["0-2", "3-5", "6-8", "9-11", "12-14", "15-17", "18-20", "21-23", "24-26", "27-29", "30-32", "33-35", "36-39"]
+            values=["0-2", "3-5", "6-8", "9-11", "12-14", "15-17", "18-20", "21-23", "24-26", "27-29", "30-32", "33-35",
+                    "36-39"]
         )
 
         my_app.preprocessing.dataset.define_boolean_col(
@@ -68,7 +66,6 @@ class MyTestCase(unittest.TestCase):
             name='breast-quad',
             values=['left_up', 'left_low', 'right_up', 'right_low', 'central']
         )
-
 
         my_app.preprocessing.dataset.define_boolean_col(
             name='irradiat',
@@ -100,23 +97,23 @@ class MyTestCase(unittest.TestCase):
 
         my_app.mining.train_comparaison_method(method="ACCURACY")
 
-        svc_cls = my_app.mining.svc_classifier()\
+        svc_cls = my_app.mining.svc_classifier() \
             .C(C=[1.0, 2.0])
 
-        decision_tree_cls = my_app.mining.decision_tree_classifier()\
-            .splitter(splitter=["BEST", "RANDOM"])\
-            .criterion(criterion=["GINI", "ENTROPY"])\
+        decision_tree_cls = my_app.mining.decision_tree_classifier() \
+            .splitter(splitter=["BEST", "RANDOM"]) \
+            .criterion(criterion=["GINI", "ENTROPY"]) \
             .min_samples_split([10, 12])
 
-        my_app.mining.k_neighbor_classifier()\
+        my_app.mining.k_neighbor_classifier() \
             .n_neighbors(n_neighbors=[5, 8])
 
-        my_app.mining.mlpc_classifier()\
-            .solver(solver=["SGD", "ADAM"])\
+        my_app.mining.mlpc_classifier() \
+            .solver(solver=["SGD", "ADAM"]) \
             .activation(activation=["TANH", "IDENTITY"])
 
-        my_app.mining.random_forest_classifier()\
-            .criterion(criterion=["GINI", "ENTROPY"])\
+        my_app.mining.random_forest_classifier() \
+            .criterion(criterion=["GINI", "ENTROPY"]) \
             .n_estimators(n_estimators=[5, 2])
 
         ###############
@@ -128,17 +125,13 @@ class MyTestCase(unittest.TestCase):
 
         my_app.comparaison.add_score_chart(scores=["F1_SCORE", "AUC"], classifiers=[svc_cls, decision_tree_cls])
 
-
-        NAME_OUTPUT: str = 'my_notebook.ipynb'
+        NAME_OUTPUT: str = 'breast_cancer_notebook.ipynb'
 
         if os.path.exists(NAME_OUTPUT):
             os.remove(NAME_OUTPUT)
 
         with open(NAME_OUTPUT, 'w', encoding='utf-8') as f:
             nbformat.write(my_app.generate(), f)
-
-
-
 
 
 if __name__ == '__main__':

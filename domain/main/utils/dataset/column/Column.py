@@ -42,3 +42,8 @@ class Column(ABC):
 
     def get_cleaning_method(self) -> CleaningMethod:
         return self.__cleaning_method
+
+
+    @abstractmethod
+    def export_transformation(self) -> str:
+        pass

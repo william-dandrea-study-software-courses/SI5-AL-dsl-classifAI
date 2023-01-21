@@ -1,8 +1,11 @@
 from typing import List, Tuple
 
 import nbformat
+import networkx as nx
+import numpy as np
 
 from graphviz import Digraph
+from matplotlib import pyplot as plt
 
 from domain.main.steps.Step import Step
 from steps.preprocessing.cleaning.DeleteLineCleaningMethod import DeleteLineCleaningMethod
@@ -21,6 +24,9 @@ class Preprocessing(Step):
         self.__is_dataset_contains_headers_name = is_dataset_contains_headers_name
         self.__dataset: Dataset = None
 
+    def get_url_dataset(self) -> str:
+        return self.__url_dataset
+
     def add_dataset(self, dataset: Dataset):
         self.__dataset = dataset
 
@@ -33,8 +39,7 @@ class Preprocessing(Step):
 
         cells: List[Cell] = [Cell("import warnings\nwarnings.filterwarnings('ignore')", CellTypeEnum.CODE)]
 
-        self.__create_mindmap_image()
-        cells.append(Cell('![alt text](mindmap.png "Title")', CellTypeEnum.MARKDOWN))
+        cells.append(Cell(f'![alt text]({f"{self.__url_dataset}_mindmap.png"} "Mindmap")', CellTypeEnum.MARKDOWN))
 
         description_content = f"# Préprocessing" + '\n'
         description_content += self.__generate_table_with_columns_details()
@@ -86,21 +91,3 @@ class Preprocessing(Step):
                 ] for column in self.__dataset.get_columns()
             ]
         )
-
-
-
-    def __create_mindmap_image(self):
-        data = {'Parent': ['Child 1', 'Child 2'], 'Child 1': ['Subchild 1', 'Subchild 2'], 'Child 2': ['Subchild 3']}
-
-        graph = Digraph(format='png')
-        graph.attr(rankdir='LR', size='8,5')
-        graph.attr('node', shape='circle')
-
-        root = 'Curriculum'
-        days = ['day 1', 'day 2', 'day 3']
-
-        for day in days:
-            graph.edge(root, day, "tst")
-
-        graph.render('sg', view=True)
-

@@ -13,5 +13,5 @@ class CombinaisonChart(Chart):
     def export(self) -> List[Cell]:
         return [Cell(f'comparaison_chart({self.__classifier.get_grid_search_name()})\n', CellTypeEnum.CODE)]
 
-
-
+    def description_charting_infos(self):
+        return [self.__classifier.get_grid_search_name()], []
