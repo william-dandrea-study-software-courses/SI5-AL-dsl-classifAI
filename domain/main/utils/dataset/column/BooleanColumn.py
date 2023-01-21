@@ -39,3 +39,17 @@ class BooleanColumn(Column):
 
     def get_type(self) -> str:
         return "Boolean"
+
+
+    def export_transformation(self):
+
+        code_cell = ""
+
+        if not self.__is_label and self.get_default_transformation():
+            replacement = {self.__true_value: True, self.__false_value: False}
+            code_cell += f'\tX_train["{self.get_name()}"] = X_train["{self.get_name()}"].map({replacement})\n' \
+                         f'\tX_val["{self.get_name()}"] = X_val["{self.get_name()}"].map({replacement})\n' \
+                         f'\tX_test["{self.get_name()}"] = X_test["{self.get_name()}"].map({replacement})\n' \
+                         f'\t\n'
+
+        return code_cell
