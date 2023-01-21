@@ -1,9 +1,13 @@
 App::= 
-    <Name> '= create_app()'
+    <AppName> '= create_app()'
     
     ( <Step> )+
 
-    <Name>'.generate()'
+    <AppName>'.generate()'
+
+AppName::= <Name>
+
+Name::= String
     
 Step::= <Preprocessing> | <Splitting> | <Transformation> | <Mining> | <Comparaison>
 
@@ -12,15 +16,15 @@ Step::= <Preprocessing> | <Splitting> | <Transformation> | <Mining> | <Comparais
 #####################################################
 
 Preprocessing::=
-    <Name>'.preprocessing.dataset''(''path=' String ')'
-    ( <Name>'.preprocessing.dataset.'Column )+
+    <AppName>'.preprocessing.dataset_file''(''path=' String ')'
+    ( <AppName>'.preprocessing.dataset.'Column )+
     
 
 Column::= <BooleanColumn> | <QualitativeColumn> | <QuantitativeColumn>
 
 BooleanColumn::=
     '# Replace parameters for true and false values if this does not fit for your case'
-    'define_bool_col''(''name=' String ',' 'true_value=' 'yes' ',' 'false_value=' 'no' ',' 'Cleaning_method=' <CleaningMethod> ')'
+    'define_bool_col''(''name=' String ',' 'true_value=' 'yes' ',' 'false_value=' 'no' ',' 'is_label=' 'False' ',' ( 'Cleaning_method=' <CleaningMethod> )? ')'
 
 CleaningMethod::= <DeleteLineCleaningMethod> | <ReplaceLineCleaningMethod>
 
@@ -51,21 +55,38 @@ QuantitativeContinuous::=
 ##################################################
 
 Splitting::=
-    <Name>'.splitting.train_validation_test''(''train_percent=' Int ',' 'validation_percent=' Int ',' 'test_percent=' Int ')'
+    <AppName>'.splitting.dataset''(' String ')'
+    <AppName>'.splitting.train_validation_test''(''train_percent=' Int ',' 'validation_percent=' Int ',' 'test_percent=' Int ')'
 
 ######################################################
 # Grammar part about how to build the Transformation #
 ######################################################
 
 Transformation::=
-    <Name>'.transformation.dataset''(''dataset=' String ')'
+    <AppName>'.transformation.dataset''(''dataset=' <AppName>'.preprocessing.dataset ')'
 
 ##############################################
 # Grammar part about how to build the Mining #
 ##############################################
 
 Mining::=
-    ( <Name>'.mining.'<Classifier> )+
+    <AppName>'.mining.'<TrainComparisonMethod>
+    <ClassifierName> '=' ( <AppName>'.mining.'<Classifier> )+
+
+ClassifierName::= <Name>
+
+TrainComparisonMethod::=
+    'train_comparison_method''(' 'method=' <Method> ')
+
+Method::= <Accuracy> | <LearnTime> | <MeanScore> | <Precision>
+
+Accuracy::= 'ACCURACY'
+
+LearnTime::= 'LEARN_TIME'
+
+MeanScore::= 'MEAN_SCORE'
+
+Precision::= 'PRECISION'
 
 Classifier::=
     <DecisionTreeClassifier> | <RandomForestClassifier> | <MLPCClassifier> | <SVCClassifier> | <KNeighborClassifier>
@@ -140,13 +161,25 @@ Relu::= 'RELU'
 ###################################################
 
 Comparaison::=
-   ( <Name>'.comparaison.'<Chart> )+
+   ( <AppName>'.comparaison.'<Chart> )+
 
 Chart::=
     <CombinaisonChart> | <ScoreChart>
 
 CombinaisonChart::=
-    'combinaison_chart''(''classifier=' <Classifier> ')'
+    'add_combinaison_chart''(''classifier=' <ClassifierName> ')'
 
 ScoreChart::=
-    'score_chart''(''scores=' List ',' 'classifiers=' List ')'
+    'score_chart''(''scores=' <Scores> ',' 'classifiers=' <Classifiers> ')'
+
+Scores::= '[' <Score> ( ',' <Score>)+ ']'
+
+Classifiers::= '[' <ClassifierName> ( ',' <ClassifierName>)+ ']'
+
+Score::= <Accuracy> | <F1> | <Precision> | <Recall> | <Auc>
+
+F1::= 'F1'
+
+Recall::= 'RECALL'
+
+Auc::= 'AUC'
