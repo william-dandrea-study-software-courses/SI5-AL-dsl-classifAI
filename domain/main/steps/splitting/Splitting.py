@@ -29,6 +29,9 @@ class Splitting(Step):
 
     def export(self) -> List[Cell]:
 
+        if self.__train_dataset_percentage + self.__validation_dataset_percentage + self.__test_dataset_percentage > 1:
+            raise ValueError("You cannot split with over than 100%")
+
         cells: List[Cell] = [Cell("# Splitting", CellTypeEnum.MARKDOWN)]
 
         label_column_name = None

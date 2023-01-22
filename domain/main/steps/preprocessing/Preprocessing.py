@@ -34,6 +34,10 @@ class Preprocessing(Step):
         if self.__dataset is None:
             raise Exception("A dataset is required for generate the Jupyter notebook file")
 
+        column_names: List[str] = [col.get_name() for col in self.__dataset.get_columns()]
+        if len(column_names) != len(set(column_names)):
+            raise ValueError("A dataset cannot have 2 columns with the same name")
+
         self._imports.append(Import(package="pandas", method=None, as_name="pd"))
         self._imports.append(Import(package="numpy", method=None, as_name="np"))
 
